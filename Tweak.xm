@@ -31,7 +31,7 @@
 %ctor
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	if([NSHomeDirectory() hasPrefix:@"/var/containers/Bundle/Application/"])	// only hook App Store applications
+	if([NSHomeDirectory() hasPrefix:@"/var/mobile/Containers/Data/Application/"])	// only hook App Store applications
 	{
 		%init;
 	}
