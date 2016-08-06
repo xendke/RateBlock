@@ -24,15 +24,17 @@
 			%orig;
 		}
 		else{
-			// NSArray *actions = [arg1 actions];
-			// long actionslen = (long)[actions count];
-			// NSLog(@"actions length: %lu", actionslen);
-			// for(UIAlertAction* action in actions)
-			// {
-			// 	if([[[action title] lowercaseString] isEqualToString:@"cancel"]){
-			// 		NSLog(@"cancel found");
-			// 	} //no access to action's handler
-			// }
+			NSArray *actions = [arg1 actions];
+			long actionslen = (long)[actions count];
+			NSLog(@"actions length: %lu", actionslen);
+			for(UIAlertAction* action in actions)
+			{
+				if([[[action title] lowercaseString] isEqualToString:@"cancel"]){//dismiss etc
+					NSLog(@"cancel found");
+					action.handler(action);//added handler property to UIAlerAction.h, though handler is called app does not continue:(
+					// @property (nonatomic, copy) void (^handler) (UIAlerAction *action);
+				}
+			}
 		}
 	}
 }
