@@ -1,5 +1,5 @@
 include $(THEOS)/makefiles/common.mk
-
+export RateBlock_FRAMEWORKS = UIKit
 TWEAK_NAME = RateBlock
 RateBlock_FILES = Tweak.xm
 
