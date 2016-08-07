@@ -1,19 +1,18 @@
 %hook UIViewController
-- (void)presentViewController:(UIAlertController *)arg1 animated:(BOOL)arg2 completion:(void (^)(void))arg3
+- (void)presentViewController:(UIAlertController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
 {
-	BOOL canShow = YES;
-
-	if(![arg1 isKindOfClass:[UIAlertController class]]){
+	if(![viewControllerToPresent isKindOfClass:[UIAlertController class]]){
 		%orig;
 	}
 	else{
-		NSArray *array = [[arg1 title] componentsSeparatedByString:@" "];
+		BOOL canShow = YES;
+		NSArray *array = [[viewControllerToPresent title] componentsSeparatedByString:@" "];
 		for(NSString* string in array)
 		{
 			if([[string lowercaseString] isEqualToString:@"rate"])
 				canShow = NO;
 		}
-		array = [[arg1 message] componentsSeparatedByString:@" "];
+		array = [[viewControllerToPresent message] componentsSeparatedByString:@" "];
 		for(NSString* string in array)
 		{
 			if([[string lowercaseString] isEqualToString:@"rate"])
@@ -24,15 +23,16 @@
 			%orig;
 		}
 		else{
-			NSArray *actions = [arg1 actions];
+			NSArray *actions = [viewControllerToPresent actions];
 			long actionslen = (long)[actions count];
 			NSLog(@"actions length: %lu", actionslen);
 			for(UIAlertAction* action in actions)
 			{
-				if([[[action title] lowercaseString] isEqualToString:@"cancel"]){//dismiss etc
+				if([action style] == UIAlertActionStyleCancel){//dismiss etc
 					NSLog(@"cancel found");
 					action.handler(action);//added handler property to UIAlerAction.h, though handler is called app does not continue:(
 					// @property (nonatomic, copy) void (^handler) (UIAlerAction *action);
+					break;
 				}
 			}
 		}
